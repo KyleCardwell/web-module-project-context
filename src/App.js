@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Route } from 'react-router-dom';
 import data from './data';
+import { ProductContext } from './contexts/ProductContext';
+import { CartContext } from './contexts/CartContext'
 
 // Components
 import Navigation from './components/Navigation';
@@ -13,20 +15,41 @@ function App() {
 
 	const addItem = item => {
 		// add the given item to the cart
+				
+		console.log(item)
+		// 
+		// if(cart.find(book => book.id === item.id)) {
+
+			setCart([...cart, item]);
+
+		// } else {
+		// 	return cart;
+		// }
+
 	};
+
+	// useEffect(() => {
+	// 	console.log(cart)
+	// }, [cart])
 
 	return (
 		<div className="App">
-			<Navigation cart={cart} />
+			<CartContext.Provider value={{ cart }}>
+				<Navigation />
+			</CartContext.Provider>
 
 			{/* Routes */}
-			<Route exact path="/">
-				<Products products={products} addItem={addItem} />
-			</Route>
+			<ProductContext.Provider value={{ products, addItem }}>
+				<Route exact path="/">
+					<Products />
+				</Route>
 
-			<Route path="/cart">
-				<ShoppingCart cart={cart} />
-			</Route>
+				<CartContext.Provider value={{ cart }}>
+					<Route path="/cart">
+						<ShoppingCart />
+					</Route>
+				</CartContext.Provider>
+			</ProductContext.Provider>
 		</div>
 	);
 }

@@ -15,22 +15,22 @@ function App() {
 
 	const addItem = item => {
 		// add the given item to the cart
-				
-		console.log(item)
-		// 
-		// if(cart.find(book => book.id === item.id)) {
+		
+		if (cart.find(book => book.id === item.id)) {
+	
+				return cart;
+	
+			} else {
 
-			setCart([...cart, item]);
+				setCart([...cart, item]);
+			}
+		};
 
-		// } else {
-		// 	return cart;
-		// }
+	const removeItem = id => {
 
-	};
+		setCart(cart.filter(item => item.id !== id))
+	}
 
-	// useEffect(() => {
-	// 	console.log(cart)
-	// }, [cart])
 
 	return (
 		<div className="App">
@@ -44,7 +44,7 @@ function App() {
 					<Products />
 				</Route>
 
-				<CartContext.Provider value={{ cart }}>
+				<CartContext.Provider value={{ cart, removeItem }}>
 					<Route path="/cart">
 						<ShoppingCart />
 					</Route>
